@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { LowdbController } from './lowdb.controller';
-import { LowdbService } from './lowdb.service';
+import { LowdbController } from './lowdb.controller.js';
+import { LowdbService } from './lowdb.service.js';
 
 @Module({
   imports: [],

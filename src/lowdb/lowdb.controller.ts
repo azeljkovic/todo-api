@@ -1,5 +1,7 @@
-import { Controller, Get } from '@nestjs/common';
-import { LowdbService } from './lowdb.service';
+import { Controller, Get, Post } from '@nestjs/common';
+import { LowdbService } from './lowdb.service.js';
+
+// import { LowdbService } from 'lowdb.service';
 
 @Controller('lowdb')
 export class LowdbController {
@@ -8,5 +10,10 @@ export class LowdbController {
   @Get()
   getHello(): string {
     return this.lowdbService.getTodos();
+  }
+
+  @Post()
+  postTodo(): Promise<string> {
+    return this.lowdbService.postTodos();
   }
 }
