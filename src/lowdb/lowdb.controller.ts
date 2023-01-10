@@ -1,4 +1,4 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get, Post, Req } from '@nestjs/common';
 import { LowdbService } from './lowdb.service.js';
 
 // import { LowdbService } from 'lowdb.service';
@@ -13,7 +13,7 @@ export class LowdbController {
   }
 
   @Post()
-  postTodo(): Promise<string> {
-    return this.lowdbService.postTodos();
+  postTodo(@Req() request: Request): Promise<string> {
+    return this.lowdbService.postTodos(request.body);
   }
 }

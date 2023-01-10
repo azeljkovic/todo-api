@@ -10,9 +10,11 @@ export class LowdbService {
     return 'Hello from lowdb service!';
   }
 
-  async postTodos(): Promise<string> {
+  async postTodos(body): Promise<string> {
+    console.log(body);
     type Data = {
-      posts: string[];
+      // posts: string[];
+      posts: { timestamp: string; text: string }[];
     };
     // File path
     const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -34,7 +36,7 @@ export class LowdbService {
     db.data ||= { posts: [] }; // For Node >= 15.x
 
     // Create and query items using native JS API
-    db.data.posts.push('hello world');
+    db.data.posts.push({ timestamp: new Date().toJSON(), text: body.todo });
     const firstPost = db.data.posts[0];
 
     // Alternatively, you can also use this syntax if you prefer
