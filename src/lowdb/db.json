@@ -1,0 +1,16 @@
+{
+  "posts": [
+    {
+      "timestamp": "2023-01-10T20:35:23.803Z",
+      "text": "do this"
+    },
+    {
+      "timestamp": "2023-01-10T20:37:53.385Z",
+      "text": "do that"
+    },
+    {
+      "timestamp": "2023-01-10T20:38:00.820Z",
+      "text": "do another thing"
+    }
+  ]
+}
