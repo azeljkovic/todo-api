@@ -1,18 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { JSONFile, Low } from 'lowdb';
+import { TodoInterface } from './interfaces/lowdb.interface.js';
 
 @Injectable()
 export class LowdbService {
-  getTodos(): string {
-    return 'Hello from lowdb service!';
+  async getTodos(): Promise<TodoInterface> {
+    const adapter = new JSONFile<TodoInterface>('src/lowdb/db.json');
+    const db = new Low(adapter);
+
+    // Read data from JSON file, this will set db.data content
+    await db.read();
+    return db.data;
   }
 
   async postTodos(body): Promise<string> {
-    type Data = {
-      posts: { timestamp: string; text: string }[];
-    };
-
-    const adapter = new JSONFile<Data>('src/lowdb/db.json');
+    const adapter = new JSONFile<TodoInterface>('src/lowdb/db.json');
     const db = new Low(adapter);
 
     // Read data from JSON file, this will set db.data content
