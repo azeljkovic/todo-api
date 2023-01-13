@@ -1,20 +1,23 @@
-import { Controller, Get, Post, Req } from '@nestjs/common';
+import { Controller, Get, Param, Post, Req } from '@nestjs/common';
 import { LowdbService } from './lowdb.service.js';
-import { TodoInterface } from './interfaces/lowdb.interface.js';
+import {
+  TodoArrayInterface,
+  TodoInterface,
+} from './interfaces/lowdb.interface.js';
 
 @Controller('lowdb')
 export class LowdbController {
   constructor(private readonly lowdbService: LowdbService) {}
 
   @Get()
-  getAllTodos(): Promise<TodoInterface> {
+  getAllTodos(): Promise<TodoArrayInterface> {
     return this.lowdbService.getAllTodos();
   }
 
-  // @Get()
-  // getTodo(): Promise<TodoInterface> {
-  //   return this.lowdbService.getTodo();
-  // }
+  @Get(':id')
+  getTodo(@Param() params): Promise<TodoInterface | string> {
+    return this.lowdbService.getTodo(params.id);
+  }
 
   @Post()
   postTodo(@Req() request: Request): Promise<string> {

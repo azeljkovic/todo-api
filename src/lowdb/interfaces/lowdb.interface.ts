@@ -1,3 +1,7 @@
 export interface TodoInterface {
-  posts: { id: string; text: string }[];
+  id: string;
+  text: string;
+}
+export interface TodoArrayInterface {
+  posts: TodoInterface[];
 }

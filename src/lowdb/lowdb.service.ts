@@ -1,12 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { JSONFile, Low } from 'lowdb';
-import { TodoInterface } from './interfaces/lowdb.interface.js';
+import {
+  TodoArrayInterface,
+  TodoInterface,
+} from './interfaces/lowdb.interface.js';
 import { randomUUID } from 'node:crypto';
 
 @Injectable()
 export class LowdbService {
-  async getAllTodos(): Promise<TodoInterface> {
-    const adapter = new JSONFile<TodoInterface>('src/lowdb/db.json');
+  async getAllTodos(): Promise<TodoArrayInterface> {
+    const adapter = new JSONFile<TodoArrayInterface>('src/lowdb/db.json');
     const db = new Low(adapter);
 
     // Read data from JSON file, this will set db.data content
@@ -14,8 +17,24 @@ export class LowdbService {
     return db.data;
   }
 
+  async getTodo(id): Promise<TodoInterface | string> {
+    const adapter = new JSONFile<TodoArrayInterface>('src/lowdb/db.json');
+    const db = new Low(adapter);
+
+    // Read data from JSON file, this will set db.data content
+    await db.read();
+
+    const found = db.data.posts.find((element) => element.id === id);
+
+    if (found) {
+      return found;
+    } else {
+      return 'nothing found';
+    }
+  }
+
   async postTodo(body): Promise<string> {
-    const adapter = new JSONFile<TodoInterface>('src/lowdb/db.json');
+    const adapter = new JSONFile<TodoArrayInterface>('src/lowdb/db.json');
     const db = new Low(adapter);
 
     // Read data from JSON file, this will set db.data content
