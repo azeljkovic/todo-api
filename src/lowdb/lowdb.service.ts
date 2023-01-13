@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { JSONFile, Low } from 'lowdb';
 import { TodoInterface } from './interfaces/lowdb.interface.js';
+import { randomUUID } from 'node:crypto';
 
 @Injectable()
 export class LowdbService {
-  async getTodos(): Promise<TodoInterface> {
+  async getAllTodos(): Promise<TodoInterface> {
     const adapter = new JSONFile<TodoInterface>('src/lowdb/db.json');
     const db = new Low(adapter);
 
@@ -13,7 +14,7 @@ export class LowdbService {
     return db.data;
   }
 
-  async postTodos(body): Promise<string> {
+  async postTodo(body): Promise<string> {
     const adapter = new JSONFile<TodoInterface>('src/lowdb/db.json');
     const db = new Low(adapter);
 
@@ -25,7 +26,7 @@ export class LowdbService {
     db.data ||= { posts: [] };
 
     // Create and query items using native JS API
-    db.data.posts.push({ timestamp: new Date().toJSON(), text: body.todo });
+    db.data.posts.push({ id: randomUUID(), text: body.todo });
     // Finally, write db.data content to file
     await db.write();
 

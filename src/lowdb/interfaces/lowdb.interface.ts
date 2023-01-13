@@ -1,3 +1,3 @@
 export interface TodoInterface {
-  posts: { timestamp: string; text: string }[];
+  posts: { id: string; text: string }[];
 }

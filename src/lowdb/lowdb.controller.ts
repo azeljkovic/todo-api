@@ -7,12 +7,17 @@ export class LowdbController {
   constructor(private readonly lowdbService: LowdbService) {}
 
   @Get()
-  getHello(): Promise<TodoInterface> {
-    return this.lowdbService.getTodos();
+  getAllTodos(): Promise<TodoInterface> {
+    return this.lowdbService.getAllTodos();
   }
+
+  // @Get()
+  // getTodo(): Promise<TodoInterface> {
+  //   return this.lowdbService.getTodo();
+  // }
 
   @Post()
   postTodo(@Req() request: Request): Promise<string> {
-    return this.lowdbService.postTodos(request.body);
+    return this.lowdbService.postTodo(request.body);
   }
 }
