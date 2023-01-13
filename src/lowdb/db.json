@@ -1,16 +1,16 @@
 {
   "posts": [
     {
-      "timestamp": "2023-01-10T20:35:23.803Z",
-      "text": "do this"
+      "id": "01d511db-dbbb-4d24-b0d9-45c7e69c3382",
+      "text": "first task"
     },
     {
-      "timestamp": "2023-01-10T20:37:53.385Z",
-      "text": "do that"
+      "id": "4c0edde5-4b6b-4931-9392-4e5f9a23ace2",
+      "text": "second task"
     },
     {
-      "timestamp": "2023-01-10T20:38:00.820Z",
-      "text": "do another thing"
+      "id": "40cad351-6c16-4835-a45a-228c351f067e",
+      "text": "last task"
     }
   ]
 }
