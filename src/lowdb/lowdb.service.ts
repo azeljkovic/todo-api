@@ -5,6 +5,7 @@ import {
   TodoInterface,
 } from './interfaces/lowdb.interface.js';
 import { randomUUID } from 'node:crypto';
+import { CreateTodoDto } from './dto/create-todo.dto.js';
 
 @Injectable()
 export class LowdbService {
@@ -33,7 +34,7 @@ export class LowdbService {
     }
   }
 
-  async postTodo(body): Promise<string> {
+  async postTodo(body: CreateTodoDto): Promise<string> {
     const adapter = new JSONFile<TodoArrayInterface>('src/lowdb/db.json');
     const db = new Low(adapter);
 
