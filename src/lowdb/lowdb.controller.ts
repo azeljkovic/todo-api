@@ -1,10 +1,10 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { LowdbService } from './lowdb.service.js';
 import {
   TodoArrayInterface,
   TodoInterface,
 } from './interfaces/lowdb.interface.js';
-import { CreateTodoDto } from './dto/create-todo.dto.js';
+import { TodoDto } from './dto/todo.dto.js';
 
 @Controller('lowdb')
 export class LowdbController {
@@ -21,7 +21,12 @@ export class LowdbController {
   }
 
   @Post()
-  postTodo(@Body() createTodoDto: CreateTodoDto): Promise<string> {
-    return this.lowdbService.postTodo(createTodoDto);
+  postTodo(@Body() todoDto: TodoDto): Promise<string> {
+    return this.lowdbService.postTodo(todoDto);
+  }
+
+  @Patch(':id')
+  editTodo(@Param() params, @Body() todoDto: TodoDto): Promise<string> {
+    return this.lowdbService.editTodo(params.id, todoDto);
   }
 }

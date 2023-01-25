@@ -5,7 +5,7 @@ import {
   TodoInterface,
 } from './interfaces/lowdb.interface.js';
 import { randomUUID } from 'node:crypto';
-import { CreateTodoDto } from './dto/create-todo.dto.js';
+import { TodoDto } from './dto/todo.dto.js';
 
 @Injectable()
 export class LowdbService {
@@ -34,7 +34,7 @@ export class LowdbService {
     }
   }
 
-  async postTodo(body: CreateTodoDto): Promise<string> {
+  async postTodo(body: TodoDto): Promise<string> {
     const adapter = new JSONFile<TodoArrayInterface>('src/lowdb/db.json');
     const db = new Low(adapter);
 
@@ -51,5 +51,37 @@ export class LowdbService {
     await db.write();
 
     return 'todo posted';
+  }
+
+  async editTodo(id: string, body: TodoDto): Promise<string> {
+    const adapter = new JSONFile<TodoArrayInterface>('src/lowdb/db.json');
+    const db = new Low(adapter);
+
+    // Read data from JSON file, this will set db.data content
+    await db.read();
+
+    // If db.json doesn't exist, db.data will be null
+    // Use the code below to set default data
+    db.data ||= { posts: [] };
+
+    // Create and query items using native JS API
+    // db.data.posts.push({ id: randomUUID(), text: body.todo });
+    // console.log(db.data.posts);
+
+    let todoFound = false;
+    for (const obj in db.data.posts) {
+      if (id === db.data.posts[obj].id) {
+        db.data.posts[obj].text = body.todo;
+        await db.write();
+        todoFound = true;
+        break;
+      }
+    }
+
+    if (todoFound) {
+      return 'todo edited';
+    } else {
+      return 'id not found';
+    }
   }
 }
