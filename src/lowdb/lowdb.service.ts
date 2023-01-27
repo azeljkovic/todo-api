@@ -1,11 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import {
+  ResponseInterface,
   TodoArrayInterface,
   TodoInterface,
 } from './interfaces/lowdb.interface.js';
 import { randomUUID } from 'node:crypto';
 import { TodoDto } from './dto/todo.dto.js';
 import { Lowdb } from './lowdb.js';
+
+const ID_NOT_FOUND_MESSAGE = 'TODO with the provided ID not found';
+const SUCCESS_MESSAGE = 'TODO added successfully';
 
 @Injectable()
 export class LowdbService {
@@ -17,23 +21,27 @@ export class LowdbService {
     const dbData = await Lowdb.readData();
     const found = dbData.posts.find((element) => element.id === id);
 
-    return found ?? 'nothing found';
+    if (!found) {
+      throw new NotFoundException(ID_NOT_FOUND_MESSAGE);
+    }
+
+    return found;
   }
 
-  async postTodo(body: TodoDto): Promise<string> {
+  async postTodo(body: TodoDto): Promise<ResponseInterface> {
     const newData = { id: randomUUID(), text: body.todo };
     await Lowdb.writeData(newData);
 
-    return 'todo posted';
+    return { status: 201, message: SUCCESS_MESSAGE };
   }
 
-  async editTodo(id: string, body: TodoDto): Promise<string> {
+  async editTodo(id: string, body: TodoDto): Promise<ResponseInterface> {
     const result = await Lowdb.editData(id, body.todo);
 
-    if (result) {
-      return 'todo edited';
-    } else {
-      return 'id not found';
+    if (!result) {
+      throw new NotFoundException(ID_NOT_FOUND_MESSAGE);
     }
+
+    return { status: 200, message: SUCCESS_MESSAGE };
   }
 }
