@@ -1,4 +1,4 @@
-import { TodoArrayInterface } from './interfaces/lowdb.interface.js';
+import { TodoArrayInterface } from './interfaces/lowdb.interface';
 import { JSONFile, Low } from 'lowdb';
 
 export class Lowdb {

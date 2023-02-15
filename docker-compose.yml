@@ -1,0 +1,33 @@
+version: '3.7'
+
+services:
+  # Postgres
+  todo-api-postgres:
+    container_name: 'todo-api-postgres'
+    image: postgres:alpine
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+      POSTGRES_DB: todo_api_db
+      PG_DATA: /var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 100M
+      restart_policy:
+        condition: on-failure
+    volumes:
+      - todo-api-postgres-data:/var/lib/postgresql/data
+    networks:
+      - todo-api-network
+
+networks:
+  todo-api-network:
+    external: false
+volumes:
+  todo-api-postgres-data:
+    external: false
