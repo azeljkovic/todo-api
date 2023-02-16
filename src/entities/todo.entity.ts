@@ -9,5 +9,5 @@ export class TodoEntity {
   todo: string;
 
   @Column('boolean', { default: false })
-  isDone: boolean;
+  isDone = false;
 }
