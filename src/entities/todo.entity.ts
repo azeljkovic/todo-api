@@ -1,16 +1,13 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
+@Entity({ name: 'todos' })
 export class TodoEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  firstName: string;
+  todo: string;
 
-  @Column()
-  lastName: string;
-
-  @Column()
-  isActive: boolean;
+  @Column('boolean', { default: false })
+  isDone: boolean;
 }

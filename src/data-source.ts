@@ -41,7 +41,7 @@ export const dataSourceOptions: DataSourceOptions = {
   password: doc.database.password,
   database: doc.database.database,
   synchronize: false,
-  migrations: [path.join(__dirname, '.src/migrations/*.ts')],
+  migrations: [path.join(__dirname, './migrations/*.ts')],
   entities: [TodoEntity],
   cli: {
     entitiesDir: 'src/entities',
