@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ResponseInterface } from './interfaces/lowdb.interface';
 import { TodoRepository } from './repositories/todo.repository';
 import { TodoDto } from './dto/todo.dto';
+import { TodoEntity } from './entities/todo.entity';
 // import { Lowdb } from './lowdb';
 
 const ID_NOT_FOUND_MESSAGE = 'TODO with the provided ID not found';
@@ -11,9 +12,14 @@ const SUCCESS_MESSAGE = 'TODO added successfully';
 export class AppService {
   @Inject(TodoRepository) private readonly todoRepository: TodoRepository;
 
-  // async getAllTodos(): Promise<TodoArrayInterface> {
-  //   return Lowdb.readData();
-  // }
+  async getAllTodos(): Promise<TodoEntity[]> {
+    return await this.todoRepository.find({
+      select: {
+        isDone: true,
+        todo: true,
+      },
+    });
+  }
 
   // async getTodo(id): Promise<TodoInterface | string> {
   //   const dbData = await Lowdb.readData();
@@ -27,9 +33,6 @@ export class AppService {
   // }
 
   async postTodo(body: TodoDto): Promise<ResponseInterface> {
-    // const newData = { id: randomUUID(), text: body.todo };
-    // await Lowdb.writeData(newData);
-
     const todo = this.todoRepository.create({
       todo: body.todo,
     });
