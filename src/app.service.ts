@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ResponseInterface } from './interfaces/lowdb.interface';
 import { TodoRepository } from './repositories/todo.repository';
 import { TodoDto } from './dto/todo.dto';
@@ -13,24 +13,20 @@ export class AppService {
   @Inject(TodoRepository) private readonly todoRepository: TodoRepository;
 
   async getAllTodos(): Promise<TodoEntity[]> {
-    return await this.todoRepository.find({
-      select: {
-        isDone: true,
-        todo: true,
-      },
-    });
+    return await this.todoRepository.find();
   }
 
-  // async getTodo(id): Promise<TodoInterface | string> {
-  //   const dbData = await Lowdb.readData();
-  //   const found = dbData.posts.find((element) => element.id === id);
-  //
-  //   if (!found) {
-  //     throw new NotFoundException(ID_NOT_FOUND_MESSAGE);
-  //   }
-  //
-  //   return found;
-  // }
+  async getTodo(id): Promise<TodoEntity> {
+    const found = await this.todoRepository.findOneBy({
+      id: id,
+    });
+
+    if (!found) {
+      throw new NotFoundException(ID_NOT_FOUND_MESSAGE);
+    }
+
+    return found;
+  }
 
   async postTodo(body: TodoDto): Promise<ResponseInterface> {
     const todo = this.todoRepository.create({

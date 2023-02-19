@@ -1,11 +1,11 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { AppService } from './app.service.js';
 
 import { ResponseInterface } from './interfaces/lowdb.interface';
 import { TodoDto } from './dto/todo.dto';
 import { TodoEntity } from './entities/todo.entity';
 
-@Controller('lowdb')
+@Controller('todo')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
@@ -14,10 +14,10 @@ export class AppController {
     return this.appService.getAllTodos();
   }
 
-  // @Get(':id')
-  // getTodo(@Param() params): Promise<TodoInterface | string> {
-  //   return this.appService.getTodo(params.id);
-  // }
+  @Get(':id')
+  getTodo(@Param() params): Promise<TodoEntity> {
+    return this.appService.getTodo(params.id);
+  }
 
   @Post()
   postTodo(@Body() todoDto: TodoDto): Promise<ResponseInterface> {
