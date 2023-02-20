@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { AppService } from './app.service.js';
 
 import { ResponseInterface } from './interfaces/lowdb.interface';
@@ -24,11 +24,11 @@ export class AppController {
     return this.appService.postTodo(todoDto);
   }
 
-  // @Patch(':id')
-  // editTodo(
-  //   @Param() params,
-  //   @Body() todoDto: TodoDto,
-  // ): Promise<ResponseInterface> {
-  //   return this.appService.editTodo(params.id, todoDto);
-  // }
+  @Patch(':id')
+  editTodo(
+    @Param() params,
+    @Body() todoDto: TodoDto,
+  ): Promise<ResponseInterface> {
+    return this.appService.editTodo(params.id, todoDto);
+  }
 }

@@ -3,10 +3,10 @@ import { ResponseInterface } from './interfaces/lowdb.interface';
 import { TodoRepository } from './repositories/todo.repository';
 import { TodoDto } from './dto/todo.dto';
 import { TodoEntity } from './entities/todo.entity';
-// import { Lowdb } from './lowdb';
 
 const ID_NOT_FOUND_MESSAGE = 'TODO with the provided ID not found';
-const SUCCESS_MESSAGE = 'TODO added successfully';
+const ADD_SUCCESS_MESSAGE = 'TODO added successfully';
+const UPDATE_SUCCESS_MESSAGE = 'TODO updated successfully';
 
 @Injectable()
 export class AppService {
@@ -35,16 +35,21 @@ export class AppService {
 
     await this.todoRepository.save(todo);
 
-    return { status: 201, message: SUCCESS_MESSAGE };
+    return { status: 201, message: ADD_SUCCESS_MESSAGE };
   }
 
-  // async editTodo(id: string, body: TodoDto): Promise<ResponseInterface> {
-  //   const result = await Lowdb.editData(id, body.todo);
-  //
-  //   if (!result) {
-  //     throw new NotFoundException(ID_NOT_FOUND_MESSAGE);
-  //   }
-  //
-  //   return { status: 200, message: SUCCESS_MESSAGE };
-  // }
+  async editTodo(id: number, body: TodoDto): Promise<ResponseInterface> {
+    const result = await this.todoRepository.findOneBy({
+      id: id,
+    });
+
+    if (!result) {
+      throw new NotFoundException(ID_NOT_FOUND_MESSAGE);
+    }
+
+    result.todo = body.todo;
+    await this.todoRepository.save(result);
+
+    return { status: 200, message: UPDATE_SUCCESS_MESSAGE };
+  }
 }
